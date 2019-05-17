@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Articles{% endblock %}
+
+{% block body %}
+<h1 class="text-center pt-3"> Liste des articles </h1>
+<section class="articles">
+    {% for article in articles %}
+            <article class="p-4">
+                <div class="card mb-3">
+                        <h3 class="card-header">{{article.title}}</h3>
+                        <img style="height: 400px; width: 100%; display: block;" src="{{article.image}}" alt="Card image">
+                    <div class="card-body">
+                        <p class="card-text">écrit le {{ article.createdAt | date('d/m/Y')}} à {{article.createdAt | date('H:i')}}</p>
+                    </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">{{article.content | raw}}</li>
+                        </ul>
+                </div>
+                    <a href="{{ path('blog_show', {'id': article.id})}}" class="btn btn-primary">lire la suite</a>
+            </article>
+    {% endfor %}
+
+</section>
+
+{% endblock %}

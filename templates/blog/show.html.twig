@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <article class="p-4">
+        <div class="card mb-3 ">
+            <h3 class="card-header">{{article.title}}</h3>
+            <img style="height: 400px; width: 100%; display: block;" src="{{article.image}}" alt="Card image">
+        <div class="card-body text-center">
+            <p class="card-text">écrit le {{ article.createdAt | date('d/m/Y')}} à {{article.createdAt | date('H:i')}}</p>
+        </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{article.content | raw}}</li>
+            </ul>
+        </div>
+    </article>
+
+        <h2>{{ article.comments | length }} commentaires </h2>
+
+
+    <section id="commentaires">
+        {% for comment in article.comments %}
+            <div class="commentaire">
+                <div class="row">
+
+                    <div class="col-3">
+                        {{comment.author}} (<small>{{comment.createdAt | date('d/m/Y à H:i')}} </small>)
+                    </div>
+
+                    <div class="col">
+                        <div class="card border-primary mb-3">
+                            <div class="card-body">
+                                <p class="card-title">{{comment.content | raw}}</p>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+        {% if app.user %}
+
+            <h4 class="text-center pt-3">Ajouter un commentaire</h4>
+            {{ form_start(commentForm)}}
+            {{ form_row(commentForm.author, {'label': "Autheur", 'attr': {'placeholder': "Votre nom" }})}}
+            {{ form_row(commentForm.content, {'label': "Commentaire", 'attr': {'placeholder': "Votre commentaire"}})}}
+                <div class="form-goup p-2 text-center">
+                <button type="submit" class="btn btn-success"> Valider </button>
+                </div>
+            {{ form_end(commentForm)}}
+        {% else %}
+            <div class="text-center p-3">
+                <h2> Connectez vous pour laisser un message </h2>
+                <a href="{{ path('security_login') }}" class="btn btn-primary ">Me Connectez</a>
+            </div>
+
+
+        {% endif %}
+    </section>
+
+
+{% endblock %}
